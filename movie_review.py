@@ -20,12 +20,13 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+
 
 nlp = spacy.load('en_core_web_sm')
 
-# nlp.pipeline,
-nlp.pipe_names
-
+print(nlp.pipe_names)
 doc = nlp(u'it is a $10 doller gift card from Google.you can get it from "www.fgm.com" website! like seriously!!!')
 
 for t in doc:
@@ -142,14 +143,8 @@ I'm sure the producers had the best intentions, but the execution was lacking."
 myreview2 = "as a thriller movie fan i was looking for a movie that is full of thrill and this movie \
 did not dissapoint me. though i thought it won't meet my expection but i was wrong."
 
-myreview3 = "Marvel's 'Avengers: Endgame' is a breathtaking cinematic masterpiece that beautifully wraps up over a decade of storytelling. \
- The movie impressively weaves together multiple story arcs, delivering an emotional and action-packed experience. \
-  With stunning visual effects, compelling character development, and an epic conclusion,\
-   it's a must-watch for every fan of the Marvel Cinematic Universe."
-
 print(text_clf_nb.predict([myreview1]))
 print(text_clf_lsvc2.predict([myreview2]))
-print(text_clf_lsvc2.predict([myreview3]))
 
 ### Using lemmatization for performence improvement
 
@@ -180,4 +175,16 @@ print(metrics.accuracy_score(y_test, predictions))
 
 print(text_clf_lsvc3.predict([myreview1]))
 print(text_clf_lsvc3.predict([myreview2])) #it should be posative
-print(text_clf_lsvc3.predict([myreview3]))
+
+
+
+
+# ...................................Using VADER SENTIMENT ANALYSIS.................
+sid = SentimentIntensityAnalyzer()
+print(sid.polarity_scores(myreview2))
+
+movie_df['scores'] = movie_df['review'].apply(lambda r : sid.polarity_scores(r))
+print(movie_df.head(10))
+movie_df['compound'] = movie_df['scores'].apply(lambda d : d['compound'])
+movie_df['compound_score'] = movie_df['compound'].apply(lambda s : 'pos' if s > 0 else 'neg' )
+movie_df.head(10)
