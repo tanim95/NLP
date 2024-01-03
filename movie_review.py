@@ -181,19 +181,14 @@ movie_df['compound_score'] = movie_df['compound'].apply(lambda s : 'pos' if s > 
 movie_df.head(10)
 
 # ............................................................................................................
-
-
-
-
-
 import math
 from collections import Counter
 
 documents = [
-    "All the heavens seems to twinkle with a crystal line",
-    "delight keeping time ,in short of a runic rhyme!",
-    "woods are lovely ,dark and deep,but i hava promises to keep",
-    "have you ever been to woods?",
+    "All the heavens seems to twinkle with a crystal line.rhythm and music",
+    "delight keeping time ,in short of a runic rhyme!,that so musical",
+    "woods are lovely ,dark and deep,but i have promises to keep and miles to go. before i sleep with a calm music",
+    "have you ever been to woods? it was miles away from here",
 ]
 
 # Step 1: Calculating Term Frequency (TF)
